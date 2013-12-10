@@ -11,8 +11,9 @@ var cssContext = function(groups, options) {
   var context = {};
   var clean = function(expectedCss) {
     return function(css) {
-      var minifiedCss = new CleanCSS(options).minify(css);
-      assert.equal(minifiedCss, expectedCss);
+      new CleanCSS(options).minify(css, function(_, minifiedCss) {
+        assert.equal(minifiedCss, expectedCss);
+      });
     };
   };
 
@@ -1011,17 +1012,6 @@ title']{display:block}",
       "@import url('fake.css');",
       ''
     ],
-    'of a http file': "@import url(http://pro.goalsmashers.com/test.css);",
-    'of a https file': [
-      "@import url('https://pro.goalsmashers.com/test.css');",
-      "@import url(https://pro.goalsmashers.com/test.css);"
-    ],
-    'of a remote file with media': "@import url(https://pro.goalsmashers.com/test.css) screen,tv;",
-    'of a url starting with //': [
-      "@import url(//fonts.googleapis.com/css?family=Lato:400,700,400italic|Merriweather:400,700);",
-      "@import url(//fonts.googleapis.com/css?family=Lato:400,700,400italic|Merriweather:400,700);"
-    ],
-    'of a remote file via // url with media': "@import url(//pro.goalsmashers.com/test.css) screen,tv;",
     'of a directory': [
       "@import url(test/data/partials);",
       ''
